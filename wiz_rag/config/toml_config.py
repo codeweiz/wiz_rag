@@ -4,7 +4,7 @@ import toml
 from pydantic import BaseModel, Field
 
 # 项目根目录
-ROOT_DIR = Path(__file__).parent.parent
+ROOT_DIR = Path(__file__).parent.parent.parent
 
 # 加载环境变量
 try:
