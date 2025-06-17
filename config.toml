@@ -1,0 +1,5 @@
+[llm]
+provider = "deepseek"
+model_name = "deepseek-chat"
+api_key = ""
+
