@@ -35,9 +35,25 @@ class LLMConfig(BaseModel):
     )
 
 
+# Embedding 配置
+class EmbeddingConfig(BaseModel):
+    # LLM 提供商
+    provider: str = Field(
+        default=_toml_config.get("embedding", {}).get("provider", "huggingface"),
+        description="Embedding 提供商"
+    )
+
+    # LLM 模型名
+    model_name: str = Field(
+        default=_toml_config.get("embedding", {}).get("model_name", "sentence-transformers/all-mpnet-base-v2"),
+        description="Embedding 模型名称"
+    )
+
+
 # 应用配置
 class TomlConfig(BaseModel):
     llm: LLMConfig = Field(default_factory=LLMConfig)
+    embedding: EmbeddingConfig = Field(default_factory=EmbeddingConfig)
 
 
 # 全局配置实例
