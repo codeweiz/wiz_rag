@@ -1,4 +1,4 @@
-.PHONY: setup install dev clean lint test run worker ngrok
+.PHONY: setup install dev clean lint test run worker ngrok chroma
 
 # 默认目标
 all: setup
@@ -44,3 +44,7 @@ worker:
 # 启动 ngrok 反向代理
 ngrok:
 	ngrok http 8000
+
+# 启动 Chromadb
+chroma:
+	chroma run --path ./data
