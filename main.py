@@ -145,6 +145,78 @@ def test_milvus():
     logging.info(results)
 
 
+def test_milvus_lite():
+    from pymilvus import MilvusClient, model
+
+    client = MilvusClient()
+
+    if client.has_collection(collection_name="demo_collection"):
+        client.drop_collection(collection_name="demo_collection")
+    client.create_collection(collection_name="demo_collection", dimension=768)
+
+    embedding_fn = model.DefaultEmbeddingFunction()
+    docs = [
+        "Artificial intelligence was founded as an academic discipline in 1956.",
+        "Alan Turing was the first person to conduct substantial research in AI.",
+        "Born in Maida Vale, London, Turing was raised in southern England."
+    ]
+    vectors = embedding_fn.encode_documents(docs)
+    print("Dim:", embedding_fn.dim, vectors[0].shape)
+
+    data = [
+        {"id": i, "vector": vectors[i], "text": docs[i], "subject": "history"}
+        for i in range(len(vectors))
+    ]
+    print("Data has", len(data), "entities, each with fields: ", data[0].keys())
+    print("Vector dim:", len(data[0]["vector"]))
+
+    res = client.insert(collection_name="demo_collection", data=data)
+    print(res)
+
+    query_vectors = embedding_fn.encode_queries(["Who is Alan Turing?"])
+    res = client.search(
+        collection_name="demo_collection",
+        data=query_vectors,
+        limit=2,
+        output_fields=["text", "subject"]
+    )
+    print("向量查询：", res)
+
+    res = client.query(
+        collection_name="demo_collection",
+        filter="subject == 'history'",
+        output_fields=["text", "subject"]
+    )
+    print("标量查询：", res)
+
+    res = client.query(
+        collection_name="demo_collection",
+        ids=[0, 2],
+        output_fields=["text", "text", "subject"]
+    )
+    print("ID 查询：", res)
+
+
+def test_schema():
+    from pymilvus import MilvusClient, DataType, Function, FunctionType
+
+    schema = MilvusClient.create_schema()
+    schema.add_field(field_name="article_id", datatype=DataType.INT64, is_primary=True)
+    schema.add_field(field_name="title", datatype=DataType.VARCHAR)
+    schema.add_field(field_name="timestamp", datatype=DataType.INT32)
+    schema.add_field(field_name="text", datatype=DataType.VARCHAR)
+    schema.add_field(field_name="text_dense_vector", datatype=DataType.FLOAT_VECTOR, dim=768)
+    schema.add_field(field_name="text_sparse_vector", datatype=DataType.SPARSE_FLOAT_VECTOR)
+
+    bm25_function = Function(
+        name="text_bm25",
+        input_field_names=["text"],
+        output_field_names=["text_sparse_vector"],
+        function_type=FunctionType.BM25
+    )
+    schema.add_function(bm25_function)
+
+
 def test_index():
     import numpy as np
     from scipy.cluster.vq import kmeans2
