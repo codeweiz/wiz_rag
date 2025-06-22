@@ -197,6 +197,26 @@ def test_milvus_lite():
     print("ID 查询：", res)
 
 
+def test_schema():
+    from pymilvus import MilvusClient, DataType, Function, FunctionType
+
+    schema = MilvusClient.create_schema()
+    schema.add_field(field_name="article_id", datatype=DataType.INT64, is_primary=True)
+    schema.add_field(field_name="title", datatype=DataType.VARCHAR)
+    schema.add_field(field_name="timestamp", datatype=DataType.INT32)
+    schema.add_field(field_name="text", datatype=DataType.VARCHAR)
+    schema.add_field(field_name="text_dense_vector", datatype=DataType.FLOAT_VECTOR, dim=768)
+    schema.add_field(field_name="text_sparse_vector", datatype=DataType.SPARSE_FLOAT_VECTOR)
+
+    bm25_function = Function(
+        name="text_bm25",
+        input_field_names=["text"],
+        output_field_names=["text_sparse_vector"],
+        function_type=FunctionType.BM25
+    )
+    schema.add_function(bm25_function)
+
+
 def test_index():
     import numpy as np
     from scipy.cluster.vq import kmeans2
