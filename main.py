@@ -1,7 +1,6 @@
 import logging
 
 import chromadb
-from attr.validators import max_len
 from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import BaseMessage
 
@@ -215,6 +214,10 @@ def test_schema():
         function_type=FunctionType.BM25
     )
     schema.add_function(bm25_function)
+
+
+def test_milvus_rag():
+    logging.info("test_milvus_rag")
 
 
 def test_index():
