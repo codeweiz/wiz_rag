@@ -3,3 +3,6 @@ uv.lock
 .env
 logs
 /milvus_demo.db
+
+data
+*.db

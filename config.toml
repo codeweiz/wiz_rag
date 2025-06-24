@@ -5,5 +5,5 @@ api_key = ""
 
 [embedding]
 provider = "huggingface"
-model_name = "BAAI/bge-small-zh-v1.5"
-#model_name = "sentence-transformers/all-mpnet-base-v2"
+#model_name = "BAAI/bge-small-zh-v1.5"
+model_name = "sentence-transformers/all-mpnet-base-v2"
