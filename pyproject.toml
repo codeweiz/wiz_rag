@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "RAG 知识库"
 requires-python = ">=3.12"
 dependencies = [
+    "bs4>=0.0.2",
     "chroma>=0.2.0",
     "chromadb>=1.0.12",
     "faiss-cpu>=1.11.0",
@@ -13,6 +14,7 @@ dependencies = [
     "langchain-core>=0.3.65",
     "langchain-deepseek>=0.1.3",
     "langchain-huggingface>=0.3.0",
+    "langchain-milvus>=0.2.0",
     "langgraph>=0.4.8",
     "numpy>=2.3.0",
     "pydantic>=2.11.7",
