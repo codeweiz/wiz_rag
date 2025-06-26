@@ -50,11 +50,41 @@ class EmbeddingConfig(BaseModel):
     )
 
 
+# LangSmith 配置
+class LangSmithConfig(BaseModel):
+    # LangSmith Tracing
+    tracing: bool = Field(
+        default=_toml_config.get("langsmith", {}).get("tracing", False),
+        description="LangSmith Tracing"
+    )
+
+    # LangSmith Project
+    project: str = Field(
+        default=_toml_config.get("langsmith", {}).get("project", "default"),
+        description="LangSmith Project"
+    )
+
+    # LangSmith API Key
+    api_key: str = Field(
+        default=_toml_config.get("langsmith", {}).get("api_key", ""),
+        description="LangSmith API Key"
+    )
+
+
 # 应用配置
 class TomlConfig(BaseModel):
     llm: LLMConfig = Field(default_factory=LLMConfig)
     embedding: EmbeddingConfig = Field(default_factory=EmbeddingConfig)
+    langsmith: LangSmithConfig = Field(default_factory=LangSmithConfig)
 
 
 # 全局配置实例
 toml_config = TomlConfig()
+
+# 设置 LangSmith 环境变量
+if toml_config.langsmith.tracing:
+    import os
+
+    os.environ["LANGCHAIN_TRACING"] = "true"
+    os.environ["LANGCHAIN_API_KEY"] = toml_config.langsmith.api_key
+    os.environ["LANGCHAIN_PROJECT"] = toml_config.langsmith.project
