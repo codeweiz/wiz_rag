@@ -29,7 +29,6 @@ def test():
 
     # Split the documents into chunks using the text_splitter
     docs = text_splitter.split_documents(documents)
-    print(docs[1])
 
     # Build the chain
     # We load the docs into milvus vectorstore, and build a milvus retriever
@@ -54,10 +53,11 @@ def test():
     )
 
     # Test the chain
-    query = "What is the difference between MRKL and HuggingGPT?"
+    query = "What is the difference between Short-Term Memory and Long-Term Memory?"
 
     vanilla_res = vanilla_rag_chain.invoke(query)
     print("vanilla_res:", vanilla_res)
+    print("\n")
 
     sub_query_res = sub_query_chain.invoke(query)
     print("sub_query_res:", sub_query_res)

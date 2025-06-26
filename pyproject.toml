@@ -7,6 +7,7 @@ dependencies = [
     "bs4>=0.0.2",
     "chroma>=0.2.0",
     "chromadb>=1.0.12",
+    "datasets>=3.6.0",
     "faiss-cpu>=1.11.0",
     "fastapi>=0.115.9",
     "langchain>=0.3.25",
@@ -27,6 +28,7 @@ dependencies = [
     "scikit-learn>=1.7.0",
     "sentence-transformers>=4.1.0",
     "toml>=0.10.2",
+    "tqdm>=4.67.1",
     "uvicorn>=0.34.3",
 ]
 
