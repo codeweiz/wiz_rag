@@ -12,3 +12,6 @@ model_name = "sentence-transformers/all-mpnet-base-v2"
 tracing = false
 api_key = ""
 project = "default"
+
+[external_resource]
+image_net = "https://github.com/towhee-io/examples/releases/download/data/reverse_image_search.zip"
