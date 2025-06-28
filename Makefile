@@ -14,6 +14,10 @@ install:
 dev:
 	uv pip install -e ".[dev]"
 
+# 安装 git 依赖
+git:
+	uv pip install git+https://github.com/openai/CLIP.git
+
 # 清理项目
 clean:
 	rm -rf build/
